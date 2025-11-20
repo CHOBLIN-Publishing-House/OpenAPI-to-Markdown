@@ -1,4 +1,3 @@
-
 '''openapi2markdown swagger.yml  swagger.md'''
 
 
@@ -7,7 +6,14 @@ import subprocess
 import tempfile
 import os
 
-st.title("📄 OpenAPI → Markdown")
+st.title("Конвертация OpenAPI → Markdown")
+
+multiline_text ='''
+info:
+  title: api-service
+  description: ""
+  version: not-initialized
+'''
 f = st.file_uploader("Выберите .yml", type=["yml", "yaml"])
 
 if f:
@@ -19,7 +25,6 @@ if f:
             with open(in_path, "wb") as fp:
                 fp.write(f.getvalue())
 
-            # Запускаем ТУ САМУЮ команду, что работает в терминале
             result = subprocess.run([
                 "openapi2markdown", in_path, out_path
             ], capture_output=True, text=True, encoding="utf-8")
@@ -34,3 +39,12 @@ if f:
         st.error(f"💥 {e}")
 
 
+st.write('')
+st.write('')
+st.write('')
+st.write('')
+st.write('')
+
+st.write('Если произошла ошибка, проверьте, что между "openapi: 3.0.1" и "servers:" (в начале yml-документа) указано:')
+st.code(multiline_text, language='python')
+st.write('Если это не решило проблему, проверьте корректность других обязательных блоков спецификации.')
